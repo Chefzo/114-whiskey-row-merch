@@ -1,0 +1,58 @@
+name: Etsy API Auth Check
+
+# Manual-only. This workflow is intentionally NOT triggered on push,
+# pull_request, or schedule. The Etsy app is pending personal approval
+# and any automated Etsy traffic should be an explicit human action.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "true = print plan only, do not call Etsy"
+        required: true
+        default: "true"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: etsy-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # Do not run on forks. Secrets are not exposed to forked runs anyway,
+    # but this makes the intent explicit.
+    if: github.repository == 'Chefzo/114-whiskey-row-merch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Plan (dry run)
+        if: ${{ inputs.dry_run == 'true' }}
+        run: |
+          echo "Dry run: not contacting Etsy."
+          echo "Would call: GET https://openapi.etsy.com/v3/application/openapi-ping"
+          echo "Required secrets: ETSY_KEYSTRING (and ETSY_SHARED_SECRET for OAuth, not used by this check)."
+          echo "Re-dispatch with dry_run=false to actually hit Etsy."
+
+      - name: Run Etsy auth check
+        if: ${{ inputs.dry_run == 'false' }}
+        env:
+          # Secrets are injected only into this step. They are never
+          # echoed, never written to disk, and never passed on the
+          # command line. The script reads them from env vars only.
+          ETSY_KEYSTRING: ${{ secrets.ETSY_KEYSTRING }}
+          ETSY_SHARED_SECRET: ${{ secrets.ETSY_SHARED_SECRET }}
+        run: |
+          if [ -z "${ETSY_KEYSTRING:-}" ]; then
+            echo "ETSY_KEYSTRING repository secret is not set." >&2
+            echo "Add it in Settings -> Secrets and variables -> Actions." >&2
+            exit 2
+          fi
+          python scripts/etsy_check_app.py

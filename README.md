@@ -69,6 +69,17 @@ BRAND.md                              Brand spec (Void System — colors, fonts,
 PRINTIFY.md                           Printify canvas specs, blanks, providers, DTG notes
 ```
 
+## Etsy automation — scaffolding only
+
+A manual `Etsy API Auth Check` workflow and a `scripts/etsy_check_app.py`
+helper are in place for the `114-whiskey-row-merch-automation` Etsy
+developer app. No Etsy keys are stored in the repo. Setup, required
+GitHub repo secrets (`ETSY_KEYSTRING`, `ETSY_SHARED_SECRET`), and the
+OAuth-vs-keystring auth model are documented in
+[`docs/etsy-automation.md`](docs/etsy-automation.md). The app may still
+be pending personal approval — the workflow defaults to `dry_run=true`
+and never logs secret values.
+
 ## Printify workflow — read before running
 
 The repo has a manual GitHub Actions workflow that pushes artwork into
