@@ -16,6 +16,13 @@ The first draft set was created in Printify before the final artwork pass. Treat
 | One Fourteen 114 Dad Hat | `6a17552dd9c7bbfe6507adc6` | Draft created, do not prioritize |
 | One Fourteen Rocks Glass | `6a17553233108491c709ee61` | Draft created, do not prioritize |
 
+## Automated update
+
+A manual GitHub Actions workflow can update this draft for you using the
+`PRINTIFY_API_TOKEN` repo secret. See
+[`printify-automation.md`](printify-automation.md) for the rotation and
+run steps. The workflow does not publish to Etsy.
+
 ## Recommended next Printify action
 
 Replace only the tee draft first:

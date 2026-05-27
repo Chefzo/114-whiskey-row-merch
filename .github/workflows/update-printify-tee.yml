@@ -1,0 +1,82 @@
+name: Update Printify Tee Draft
+
+# Manual-only. This workflow is intentionally NOT triggered on push,
+# pull_request, or schedule — it must be invoked from the Actions tab so
+# every Printify mutation is an explicit human action.
+on:
+  workflow_dispatch:
+    inputs:
+      shop_id:
+        description: Printify shop ID
+        required: true
+        default: "13010147"
+      product_id:
+        description: Printify product ID for the tee draft
+        required: true
+        default: "6a175525616126f69b0afb31"
+      front_image:
+        description: Path to the front artwork PNG (relative to repo root)
+        required: true
+        default: "artwork/front/one_fourteen_front_neon.png"
+      back_image:
+        description: Path to the back artwork PNG (relative to repo root)
+        required: true
+        default: "artwork/back/one_fourteen_back_badge_cream.png"
+      title:
+        description: Product title to set on the draft
+        required: true
+        default: "One Fourteen Neon 114 Whiskey Row Tee"
+      dry_run:
+        description: "true = fetch + plan only, no API writes"
+        required: true
+        default: "false"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-printify-tee
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    # Do not run on forks. Inputs come from a maintainer with write
+    # access who manually dispatched the workflow.
+    if: github.repository == 'Chefzo/114-whiskey-row-merch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify artwork files exist
+        run: |
+          test -f "${{ inputs.front_image }}" || { echo "Missing front image: ${{ inputs.front_image }}"; exit 1; }
+          test -f "${{ inputs.back_image }}"  || { echo "Missing back image: ${{ inputs.back_image }}"; exit 1; }
+
+      - name: Update Printify tee draft
+        env:
+          # Secret is injected only into this step. It is never echoed,
+          # never written to disk, and never passed on the command line.
+          PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
+        run: |
+          if [ -z "${PRINTIFY_API_TOKEN:-}" ]; then
+            echo "PRINTIFY_API_TOKEN repository secret is not set." >&2
+            echo "Add it in Settings -> Secrets and variables -> Actions." >&2
+            exit 2
+          fi
+          extra=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            extra="--dry-run"
+          fi
+          python scripts/update_printify_tee.py \
+            --shop-id "${{ inputs.shop_id }}" \
+            --product-id "${{ inputs.product_id }}" \
+            --front "${{ inputs.front_image }}" \
+            --back  "${{ inputs.back_image }}" \
+            --title "${{ inputs.title }}" \
+            $extra
