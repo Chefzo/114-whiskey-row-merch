@@ -1,0 +1,50 @@
+{
+  "product_id": "6a175525616126f69b0afb31",
+  "title": "One Fourteen Music Sounds Better With You Tee",
+  "visible": true,
+  "is_locked": false,
+  "front_image_id": "6a17617177f9461a84a3d43d",
+  "back_image_id": "6a17617373274c1bcb211db7",
+  "enabled_variants": [
+    {
+      "id": 73196,
+      "title": "Black / S",
+      "price": 3200
+    },
+    {
+      "id": 73200,
+      "title": "Black / M",
+      "price": 3200
+    },
+    {
+      "id": 73204,
+      "title": "Black / L",
+      "price": 3200
+    },
+    {
+      "id": 73208,
+      "title": "Black / XL",
+      "price": 3200
+    },
+    {
+      "id": 73212,
+      "title": "Black / 2XL",
+      "price": 3200
+    }
+  ],
+  "print_area_images": [
+    {
+      "position": "front",
+      "images": [
+        "front-chest-divey.png"
+      ]
+    },
+    {
+      "position": "back",
+      "images": [
+        "back-divey.png"
+      ]
+    }
+  ],
+  "sales_channel_properties": []
+}
