@@ -62,16 +62,19 @@ jobs:
         env:
           # Secret is injected only into this step. It is never echoed,
           # never written to disk, and never passed on the command line.
+          # In dry-run mode the secret is intentionally not required, so
+          # maintainers can preview the planned update without it.
           PRINTIFY_API_TOKEN: ${{ secrets.PRINTIFY_API_TOKEN }}
         run: |
-          if [ -z "${PRINTIFY_API_TOKEN:-}" ]; then
-            echo "PRINTIFY_API_TOKEN repository secret is not set." >&2
-            echo "Add it in Settings -> Secrets and variables -> Actions." >&2
-            exit 2
-          fi
           extra=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             extra="--dry-run"
+          else
+            if [ -z "${PRINTIFY_API_TOKEN:-}" ]; then
+              echo "PRINTIFY_API_TOKEN repository secret is not set." >&2
+              echo "Add it in Settings -> Secrets and variables -> Actions." >&2
+              exit 2
+            fi
           fi
           python scripts/update_printify_tee.py \
             --shop-id "${{ inputs.shop_id }}" \

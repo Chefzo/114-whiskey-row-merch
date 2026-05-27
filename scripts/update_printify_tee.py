@@ -175,26 +175,36 @@ def main() -> int:
                         help="Fetch product and print plan, but do not modify.")
     args = parser.parse_args()
 
+    repo_root = Path(__file__).resolve().parent.parent
+    front_path = (repo_root / args.front).resolve()
+    back_path = (repo_root / args.back).resolve()
+
+    if args.dry_run:
+        # Validate inputs locally without contacting Printify so a dry
+        # run can be executed without PRINTIFY_API_TOKEN.
+        missing = [p for p in (front_path, back_path) if not p.is_file()]
+        if missing:
+            for p in missing:
+                print(f"Artwork not found: {p}", file=sys.stderr)
+            return 2
+        print("Dry run: no Printify API calls will be made.")
+        print(f"Shop ID:    {args.shop_id}")
+        print(f"Product ID: {args.product_id}")
+        print(f"Title:      {args.title!r}")
+        print(f"Would upload front: {front_path}")
+        print(f"Would upload back:  {back_path}")
+        return 0
+
     token = os.environ.get("PRINTIFY_API_TOKEN")
     if not token:
         print("PRINTIFY_API_TOKEN env var is required.", file=sys.stderr)
         return 2
-
-    repo_root = Path(__file__).resolve().parent.parent
-    front_path = (repo_root / args.front).resolve()
-    back_path = (repo_root / args.back).resolve()
 
     print(f"Fetching product {args.product_id} in shop {args.shop_id}...")
     product = fetch_product(token, args.shop_id, args.product_id)
     print(f"Current title: {product.get('title')!r}")
     variants = preserved_variants(product)
     print(f"Preserving {len(variants)} enabled variant(s).")
-
-    if args.dry_run:
-        print("Dry run: skipping uploads and update.")
-        print(f"Would upload: {front_path}")
-        print(f"Would upload: {back_path}")
-        return 0
 
     front_id = upload_image(token, front_path)
     back_id = upload_image(token, back_path)
