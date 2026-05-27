@@ -8,6 +8,27 @@ existing One Fourteen tee draft in Printify without publishing it.
 - Target: shop `13010147`, product `6a175525616126f69b0afb31`
 - Trigger: `workflow_dispatch` only — never on push, PR, or schedule.
 
+> ⚠ **Heads-up before running this against the new direction.** The
+> workflow and script defaults still point at the legacy neon / vault
+> badge PNGs (`artwork/front/one_fourteen_front_neon.png` and
+> `artwork/back/one_fourteen_back_badge_cream.png`) and the old
+> "One Fourteen Neon 114 Whiskey Row Tee" title. The current lead
+> direction is the divey *Music Sounds Better With You* tee — see
+> [`next-direction.md`](./next-direction.md). Before dispatching the
+> workflow, override the inputs (or update the defaults in the workflow
+> and script) to:
+>
+> - `front_image`: `designs/one-fourteen-tee/front-chest-divey.png`
+> - `back_image`:  `designs/one-fourteen-tee/back-divey.png`
+> - `title`:       e.g. `One Fourteen Music Sounds Better With You Tee`
+> - `description` (in `scripts/update_printify_tee.py`): rewrite to
+>   match the divey concept; see [`../PRINTIFY.md`](../PRINTIFY.md).
+>
+> Always do a `dry_run: true` rehearsal first so the new inputs are
+> visible in the workflow logs before any write. Nothing about the
+> safety model below changes — variants and prices are still preserved,
+> and the automation never publishes.
+
 ## Safety model
 
 - The Printify API token is **only** read from the `PRINTIFY_API_TOKEN`
