@@ -1,0 +1,10 @@
+{
+  "http_reason": "Unauthorized",
+  "http_status": 401,
+  "method": "GET",
+  "printify_error_code": null,
+  "printify_error_message": "Unauthenticated",
+  "raw_body_snippet": "{\"error\":\"Unauthenticated\",\"request_id\":\"1779918118@2aabedc9-448d-4ccf-92af-69314ff186c4\"}",
+  "stage": "fetch_product",
+  "url": "https://api.printify.com/v1/shops/13010147/products/6a175525616126f69b0afb31.json"
+}
