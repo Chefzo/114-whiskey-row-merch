@@ -1,0 +1,31 @@
+{
+  "uploads": {
+    "one_fourteen_back_graphic.png": "6a17551e0cf11614f41c7eb6",
+    "one_fourteen_chest_mark.png": "6a1755203d46e60ddbe47243",
+    "one_fourteen_glass_mark.png": "6a175522958d6d1731bbfcd1",
+    "one_fourteen_hat_mark.png": "6a175523f640b076fef52ddd"
+  },
+  "created_products": [
+    {
+      "title": "One Fourteen Whiskey Row Tee",
+      "id": "6a175525616126f69b0afb31",
+      "visible": true,
+      "blueprint_id": 706,
+      "print_provider_id": 29
+    },
+    {
+      "title": "One Fourteen 114 Dad Hat",
+      "id": "6a17552dd9c7bbfe6507adc6",
+      "visible": true,
+      "blueprint_id": 1447,
+      "print_provider_id": 410
+    },
+    {
+      "title": "One Fourteen Rocks Glass",
+      "id": "6a17553233108491c709ee61",
+      "visible": true,
+      "blueprint_id": 1443,
+      "print_provider_id": 86
+    }
+  ]
+}

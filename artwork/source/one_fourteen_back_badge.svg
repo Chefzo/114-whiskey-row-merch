@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ONE FOURTEEN / WHISKEY ROW  —  Back tee badge
+  Vector source. Designed for single-color cream ink on dark Comfort Colors tee.
+  Print-ready at any size; default viewBox = 1000x1000.
+  Fonts used at build time: Noto Serif Display Black, Noto Sans Display Condensed Black.
+  Substitute any equivalent heavy slab/display serif and condensed sans for production.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <!-- Arc paths for text-on-path -->
+    <!-- Top arc: half-circle from left to right across the top -->
+    <path id="arcTop" d="M 138,500 A 362,362 0 0 1 862,500" fill="none"/>
+    <!-- Bottom arc: half-circle reading left to right across the bottom -->
+    <path id="arcBottom" d="M 138,500 A 362,362 0 0 0 862,500" fill="none"/>
+  </defs>
+
+  <style>
+    .ink   { fill: #F2E8D2; }
+    .ring  { stroke: #F2E8D2; fill: none; }
+    .top   { font-family: 'Noto Serif Display','Times New Roman',serif; font-weight: 900; font-size: 82px; letter-spacing: 4px; }
+    .bot   { font-family: 'Noto Serif Display','Times New Roman',serif; font-weight: 900; font-size: 78px; letter-spacing: 4px; }
+    .num   { font-family: 'Noto Serif Display','Times New Roman',serif; font-weight: 900; font-size: 380px; }
+    .tag   { font-family: 'Noto Sans Display','Arial Narrow',sans-serif; font-weight: 900; font-stretch: condensed; font-size: 30px; letter-spacing: 3px; }
+  </style>
+
+  <!-- Outer heavy ring -->
+  <circle cx="500" cy="500" r="440" class="ring" stroke-width="7"/>
+  <!-- Inner thin parallel ring -->
+  <circle cx="500" cy="500" r="418" class="ring" stroke-width="2.5"/>
+
+  <!-- Top arched wordmark -->
+  <text class="top ink" text-anchor="middle">
+    <textPath href="#arcTop" startOffset="50%">ONE  FOURTEEN</textPath>
+  </text>
+
+  <!-- Bottom arched wordmark -->
+  <text class="bot ink" text-anchor="middle">
+    <textPath href="#arcBottom" startOffset="50%">WHISKEY  ROW</textPath>
+  </text>
+
+  <!-- Side diamond ornaments at 9 and 3 o'clock -->
+  <g class="ink">
+    <polygon points="60,500 75,485 90,500 75,515"/>
+    <polygon points="910,500 925,485 940,500 925,515"/>
+  </g>
+
+  <!-- Star above the numeral -->
+  <g class="ink" transform="translate(500,222)">
+    <polygon points="0,-22 6,-7 22,-7 9,3 14,18 0,9 -14,18 -9,3 -22,-7 -6,-7"/>
+  </g>
+
+  <!-- Central numeral 114 -->
+  <text class="num ink" x="500" y="615" text-anchor="middle">114</text>
+
+  <!-- Tagline plus flanking hairlines -->
+  <g>
+    <rect x="265" y="688" width="470" height="2.5" class="ink"/>
+    <text class="tag ink" x="500" y="720" text-anchor="middle">BOURBON  ·  COCKTAILS  ·  LATE NIGHTS</text>
+    <rect x="265" y="742" width="470" height="2.5" class="ink"/>
+  </g>
+</svg>
