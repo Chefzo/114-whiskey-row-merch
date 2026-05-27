@@ -59,6 +59,7 @@ jobs:
           test -f "${{ inputs.back_image }}"  || { echo "Missing back image: ${{ inputs.back_image }}"; exit 1; }
 
       - name: Update Printify tee draft
+        id: update_printify
         env:
           # Secret is injected only into this step. It is never echoed,
           # never written to disk, and never passed on the command line.
@@ -83,3 +84,46 @@ jobs:
             --back  "${{ inputs.back_image }}" \
             --title "${{ inputs.title }}" \
             $extra
+
+      - name: Summarize Printify failure
+        if: always() && hashFiles('printify-update-diagnostic.json') != ''
+        run: |
+          # The diagnostic file is written by the script and is already
+          # sanitized: it never contains the token or request headers.
+          # We just surface a few fields into the run summary so a
+          # maintainer can triage without downloading the artifact.
+          python - <<'PY'
+          import json, os, pathlib
+          path = pathlib.Path("printify-update-diagnostic.json")
+          try:
+              data = json.loads(path.read_text())
+          except Exception as exc:
+              print(f"Could not parse diagnostic: {exc}")
+              raise SystemExit(0)
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+          lines = [
+              "## Printify update failed",
+              "",
+              f"- **Stage:** `{data.get('stage')}`",
+              f"- **HTTP status:** `{data.get('http_status')}`",
+              f"- **HTTP reason:** `{data.get('http_reason')}`",
+              f"- **Printify error code:** `{data.get('printify_error_code')}`",
+              f"- **Printify error message:** {data.get('printify_error_message')!r}",
+              "",
+              "See the `printify-update-diagnostic` artifact for the full sanitized body snippet.",
+          ]
+          text = "\n".join(lines) + "\n"
+          if summary_path:
+              with open(summary_path, "a") as fh:
+                  fh.write(text)
+          print(text)
+          PY
+
+      - name: Upload Printify diagnostic
+        if: always() && hashFiles('printify-update-diagnostic.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: printify-update-diagnostic
+          path: printify-update-diagnostic.json
+          if-no-files-found: ignore
+          retention-days: 14

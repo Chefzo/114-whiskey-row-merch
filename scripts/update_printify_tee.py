@@ -37,10 +37,83 @@ DEFAULT_DESCRIPTION = (
     "front, cream one-color vault badge on the back. Printed on Comfort "
     "Colors 1717 garment-dyed heavyweight cotton."
 )
+DIAGNOSTIC_FILENAME = "printify-update-diagnostic.json"
+
+
+class PrintifyAPIError(Exception):
+    """Raised when a Printify API call fails. Carries sanitized details."""
+
+    def __init__(self, stage: str, method: str, url: str, status: int | None,
+                 reason: str | None, error_code: Any, error_message: str | None,
+                 raw_detail: str | None):
+        self.stage = stage
+        self.method = method
+        self.url = url
+        self.status = status
+        self.reason = reason
+        self.error_code = error_code
+        self.error_message = error_message
+        self.raw_detail = raw_detail
+        super().__init__(
+            f"Printify API error {status} on {method} {url} (stage={stage}): "
+            f"{error_message or reason or raw_detail}"
+        )
+
+    def to_diagnostic(self) -> dict[str, Any]:
+        # Cap raw_detail length so we never dump anything huge that might
+        # contain unexpected payload echoes. Headers and the token are
+        # never included.
+        snippet = (self.raw_detail or "")[:2000]
+        return {
+            "stage": self.stage,
+            "method": self.method,
+            "url": self.url,
+            "http_status": self.status,
+            "http_reason": self.reason,
+            "printify_error_code": self.error_code,
+            "printify_error_message": self.error_message,
+            "raw_body_snippet": snippet,
+        }
+
+
+def _normalize_token(raw: str) -> str:
+    """Strip surrounding whitespace and any leading 'Bearer ' prefix.
+
+    Printify expects a bare token in the Authorization header value after
+    'Bearer '. If the stored secret already contains the 'Bearer ' prefix
+    (a common copy/paste mistake), strip it so we don't double-prefix.
+    """
+    token = raw.strip()
+    # Case-insensitive 'Bearer ' prefix strip.
+    if token[:7].lower() == "bearer ":
+        token = token[7:].strip()
+    return token
+
+
+def _parse_printify_error(detail: str) -> tuple[Any, str | None]:
+    """Pull the Printify error code/message out of a JSON error body.
+
+    Printify error bodies typically look like:
+        {"status": "error", "code": 8101, "message": "...", "errors": {...}}
+    Returns (code, message). Either may be None if the body isn't JSON or
+    doesn't carry those fields.
+    """
+    try:
+        parsed = json.loads(detail)
+    except (ValueError, TypeError):
+        return None, None
+    if not isinstance(parsed, dict):
+        return None, None
+    code = parsed.get("code")
+    message = parsed.get("message")
+    if message is None and isinstance(parsed.get("error"), str):
+        message = parsed["error"]
+    return code, message
 
 
 def _request(method: str, url: str, token: str, body: bytes | None = None,
-             content_type: str = "application/json") -> dict[str, Any]:
+             content_type: str = "application/json",
+             stage: str = "request") -> dict[str, Any]:
     headers = {
         "Authorization": f"Bearer {token}",
         "User-Agent": "one-fourteen-merch-updater/1.0",
@@ -53,8 +126,16 @@ def _request(method: str, url: str, token: str, body: bytes | None = None,
             raw = resp.read()
     except HTTPError as exc:
         detail = exc.read().decode("utf-8", errors="replace")
-        raise SystemExit(
-            f"Printify API error {exc.code} on {method} {url}: {detail}"
+        code, message = _parse_printify_error(detail)
+        raise PrintifyAPIError(
+            stage=stage,
+            method=method,
+            url=url,
+            status=exc.code,
+            reason=getattr(exc, "reason", None) and str(exc.reason),
+            error_code=code,
+            error_message=message,
+            raw_detail=detail,
         ) from exc
     if not raw:
         return {}
@@ -77,6 +158,7 @@ def upload_image(token: str, path: Path) -> str:
         f"{API_BASE}/uploads/images.json",
         token,
         json.dumps(payload).encode("utf-8"),
+        stage=f"upload_image:{path.name}",
     )
     image_id = resp.get("id")
     if not image_id:
@@ -90,6 +172,7 @@ def fetch_product(token: str, shop_id: str, product_id: str) -> dict[str, Any]:
         "GET",
         f"{API_BASE}/shops/{shop_id}/products/{product_id}.json",
         token,
+        stage="fetch_product",
     )
 
 
@@ -158,7 +241,14 @@ def update_product(token: str, shop_id: str, product_id: str,
         f"{API_BASE}/shops/{shop_id}/products/{product_id}.json",
         token,
         json.dumps(payload).encode("utf-8"),
+        stage="update_product",
     )
+
+
+def _write_diagnostic(repo_root: Path, diagnostic: dict[str, Any]) -> Path:
+    out_path = repo_root / DIAGNOSTIC_FILENAME
+    out_path.write_text(json.dumps(diagnostic, indent=2, sort_keys=True))
+    return out_path
 
 
 def main() -> int:
@@ -195,32 +285,51 @@ def main() -> int:
         print(f"Would upload back:  {back_path}")
         return 0
 
-    token = os.environ.get("PRINTIFY_API_TOKEN")
-    if not token:
+    raw_token = os.environ.get("PRINTIFY_API_TOKEN")
+    if not raw_token:
         print("PRINTIFY_API_TOKEN env var is required.", file=sys.stderr)
         return 2
+    token = _normalize_token(raw_token)
+    if not token:
+        print("PRINTIFY_API_TOKEN is empty after normalization.", file=sys.stderr)
+        return 2
 
-    print(f"Fetching product {args.product_id} in shop {args.shop_id}...")
-    product = fetch_product(token, args.shop_id, args.product_id)
-    print(f"Current title: {product.get('title')!r}")
-    variants = preserved_variants(product)
-    print(f"Preserving {len(variants)} enabled variant(s).")
+    try:
+        print(f"Fetching product {args.product_id} in shop {args.shop_id}...")
+        product = fetch_product(token, args.shop_id, args.product_id)
+        print(f"Current title: {product.get('title')!r}")
+        variants = preserved_variants(product)
+        print(f"Preserving {len(variants)} enabled variant(s).")
 
-    front_id = upload_image(token, front_path)
-    back_id = upload_image(token, back_path)
-    print_areas = build_print_areas(product, front_id, back_id)
+        front_id = upload_image(token, front_path)
+        back_id = upload_image(token, back_path)
+        print_areas = build_print_areas(product, front_id, back_id)
 
-    payload = {
-        "title": args.title,
-        "description": args.description,
-        "variants": variants,
-        "print_areas": print_areas,
-    }
-    print("Updating product (no publish)...")
-    result = update_product(token, args.shop_id, args.product_id, payload)
-    print(f"Updated product id: {result.get('id', args.product_id)}")
-    print("Done. Etsy publish was NOT triggered.")
-    return 0
+        payload = {
+            "title": args.title,
+            "description": args.description,
+            "variants": variants,
+            "print_areas": print_areas,
+        }
+        print("Updating product (no publish)...")
+        result = update_product(token, args.shop_id, args.product_id, payload)
+        print(f"Updated product id: {result.get('id', args.product_id)}")
+        print("Done. Etsy publish was NOT triggered.")
+        return 0
+    except PrintifyAPIError as exc:
+        diagnostic = exc.to_diagnostic()
+        out_path = _write_diagnostic(repo_root, diagnostic)
+        # Print a sanitized one-liner to stderr; the JSON file carries
+        # the full sanitized detail for the workflow to upload.
+        print(
+            f"Printify API call failed at stage={diagnostic['stage']} "
+            f"status={diagnostic['http_status']} "
+            f"code={diagnostic['printify_error_code']} "
+            f"message={diagnostic['printify_error_message']!r}",
+            file=sys.stderr,
+        )
+        print(f"Wrote diagnostic to {out_path}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
