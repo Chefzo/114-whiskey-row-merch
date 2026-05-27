@@ -1,0 +1,50 @@
+{
+  "product_id": "6a175525616126f69b0afb31",
+  "title": "One Fourteen Neon 114 Whiskey Row Tee",
+  "visible": true,
+  "is_locked": false,
+  "front_image_id": "6a175cdaaf104defc9cbadb7",
+  "back_image_id": "6a175cdcdb7191ec0cd925c4",
+  "enabled_variants": [
+    {
+      "id": 73196,
+      "title": "Black / S",
+      "price": 3200
+    },
+    {
+      "id": 73200,
+      "title": "Black / M",
+      "price": 3200
+    },
+    {
+      "id": 73204,
+      "title": "Black / L",
+      "price": 3200
+    },
+    {
+      "id": 73208,
+      "title": "Black / XL",
+      "price": 3200
+    },
+    {
+      "id": 73212,
+      "title": "Black / 2XL",
+      "price": 3200
+    }
+  ],
+  "print_area_images": [
+    {
+      "position": "front",
+      "images": [
+        "one_fourteen_front_neon.png"
+      ]
+    },
+    {
+      "position": "back",
+      "images": [
+        "one_fourteen_back_badge_cream.png"
+      ]
+    }
+  ],
+  "sales_channel_properties": []
+}
