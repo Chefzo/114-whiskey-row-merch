@@ -1,0 +1,32 @@
+{
+  "note": "Template only. Do not commit real shipping address, phone, or customer data.",
+  "shop_id": 13010147,
+  "product": {
+    "title": "One Fourteen Music Sounds Better With You Tee",
+    "product_id": "6a175525616126f69b0afb31",
+    "variant_id": 73204,
+    "variant_title": "Black / L",
+    "quantity": 1,
+    "retail_price_cents": 3200
+  },
+  "recommended_order_type": "sample",
+  "recipient_required_fields": {
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "phone": "",
+    "country": "US",
+    "region": "",
+    "address1": "",
+    "address2": "",
+    "city": "",
+    "zip": ""
+  },
+  "pre_order_checks": [
+    "Open Printify product preview on a logged-in device.",
+    "Confirm front chest hit is centered and not too high.",
+    "Confirm back graphic is centered and readable.",
+    "Confirm product is not published to Etsy before sample arrives.",
+    "Confirm shipping address and final cost before submitting order."
+  ]
+}
