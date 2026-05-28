@@ -1,0 +1,94 @@
+{
+  "uploads": {
+    "front": "6a17617177f9461a84a3d43d",
+    "back": "6a17617373274c1bcb211db7",
+    "sticker": "6a1793a23086455cbe27b036"
+  },
+  "created_products": [
+    {
+      "id": "6a1793a541b08d7aa0080506",
+      "title": "One Fourteen Music Sounds Better With You Hoodie",
+      "visible": true,
+      "blueprint_id": 175,
+      "print_provider_id": 99,
+      "enabled_variants": [
+        {
+          "id": 39898,
+          "title": "Black / 2XL",
+          "price": 6800
+        },
+        {
+          "id": 39826,
+          "title": "Black / S",
+          "price": 6800
+        },
+        {
+          "id": 39862,
+          "title": "Black / L",
+          "price": 6800
+        },
+        {
+          "id": 39880,
+          "title": "Black / XL",
+          "price": 6800
+        },
+        {
+          "id": 39844,
+          "title": "Black / M",
+          "price": 6800
+        }
+      ],
+      "sales_channel_properties": []
+    },
+    {
+      "id": "6a1793bd4dfc88b2080ff214",
+      "title": "One Fourteen Music Sounds Better With You Crewneck",
+      "visible": true,
+      "blueprint_id": 446,
+      "print_provider_id": 99,
+      "enabled_variants": [
+        {
+          "id": 62621,
+          "title": "M / Black",
+          "price": 5200
+        },
+        {
+          "id": 62633,
+          "title": "XL / Black",
+          "price": 5200
+        },
+        {
+          "id": 62627,
+          "title": "L / Black",
+          "price": 5200
+        },
+        {
+          "id": 62615,
+          "title": "S / Black",
+          "price": 5200
+        },
+        {
+          "id": 62639,
+          "title": "2XL / Black",
+          "price": 5200
+        }
+      ],
+      "sales_channel_properties": []
+    },
+    {
+      "id": "6a1793cb4dfc88b2080ff221",
+      "title": "One Fourteen Music Sounds Better With You Sticker",
+      "visible": true,
+      "blueprint_id": 600,
+      "print_provider_id": 73,
+      "enabled_variants": [
+        {
+          "id": 72007,
+          "title": "White / Die-Cut / 3\" \u00d7 3\"",
+          "price": 500
+        }
+      ],
+      "sales_channel_properties": []
+    }
+  ]
+}
