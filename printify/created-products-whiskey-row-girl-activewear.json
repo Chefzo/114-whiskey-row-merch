@@ -1,0 +1,140 @@
+{
+  "uploads": {
+    "primary": "6a17cc393326038cbc3eff80",
+    "tiny": "6a17cc3b6e49eda480a6e37f",
+    "band": "6a17cc3c4912aed7149b0d23",
+    "square": "6a17cc3d3326038cbc3eff81"
+  },
+  "created_products": [
+    {
+      "id": "6a17cc3fbfbe7defa20a15dc",
+      "title": "Whiskey Row Girl Luxe Sports Bra",
+      "visible": true,
+      "blueprint_id": 5379,
+      "print_provider_id": 217,
+      "enabled_variants": [
+        {
+          "id": 244912,
+          "title": "XS / Black",
+          "price": 4200
+        },
+        {
+          "id": 244913,
+          "title": "S / Black",
+          "price": 4200
+        },
+        {
+          "id": 244914,
+          "title": "M / Black",
+          "price": 4200
+        },
+        {
+          "id": 244915,
+          "title": "L / Black",
+          "price": 4200
+        },
+        {
+          "id": 244916,
+          "title": "XL / Black",
+          "price": 4200
+        },
+        {
+          "id": 244917,
+          "title": "2XL / Black",
+          "price": 4200
+        }
+      ],
+      "sales_channel_properties": [],
+      "positions": [
+        "right_bottom_front",
+        "back",
+        "left_bottom_front"
+      ]
+    },
+    {
+      "id": "6a17cc45318117fcbc055e16",
+      "title": "Whiskey Row Girl Luxe Leggings",
+      "visible": true,
+      "blueprint_id": 5373,
+      "print_provider_id": 217,
+      "enabled_variants": [
+        {
+          "id": 244808,
+          "title": "S / Black",
+          "price": 5800
+        },
+        {
+          "id": 244809,
+          "title": "M / Black",
+          "price": 5800
+        },
+        {
+          "id": 244810,
+          "title": "L / Black",
+          "price": 5800
+        },
+        {
+          "id": 244811,
+          "title": "XL / Black",
+          "price": 5800
+        },
+        {
+          "id": 244812,
+          "title": "2XL / Black",
+          "price": 5800
+        }
+      ],
+      "sales_channel_properties": [],
+      "positions": [
+        "left_hip",
+        "right_hip",
+        "left_leg_front",
+        "right_leg_front"
+      ]
+    },
+    {
+      "id": "6a17cc4cbfbe7defa20a1611",
+      "title": "Whiskey Row Girl Festival Crop Top",
+      "visible": true,
+      "blueprint_id": 1312,
+      "print_provider_id": 217,
+      "enabled_variants": [
+        {
+          "id": 99956,
+          "title": "Black / XS",
+          "price": 3600
+        },
+        {
+          "id": 99968,
+          "title": "Black / S",
+          "price": 3600
+        },
+        {
+          "id": 99980,
+          "title": "Black / M",
+          "price": 3600
+        },
+        {
+          "id": 99992,
+          "title": "Black / L",
+          "price": 3600
+        },
+        {
+          "id": 100004,
+          "title": "Black / XL",
+          "price": 3600
+        },
+        {
+          "id": 100016,
+          "title": "Black / 2XL",
+          "price": 3600
+        }
+      ],
+      "sales_channel_properties": [],
+      "positions": [
+        "front",
+        "back"
+      ]
+    }
+  ]
+}
