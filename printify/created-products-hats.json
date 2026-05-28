@@ -1,0 +1,38 @@
+{
+  "uploads": {
+    "core_114": "6a17ce8ec8e2a123f89ca77f",
+    "whiskey_row_girl": "6a17ce8fafc8bc95a7828854"
+  },
+  "created_products": [
+    {
+      "id": "6a17ce93a63666767e0efd42",
+      "title": "One Fourteen 114 Whiskey Row Dad Hat",
+      "visible": true,
+      "blueprint_id": 1447,
+      "print_provider_id": 217,
+      "enabled_variants": [
+        {
+          "id": 105372,
+          "title": "Black / One size",
+          "price": 3200
+        }
+      ],
+      "sales_channel_properties": []
+    },
+    {
+      "id": "6a17ce996d8cbf2dd607d36a",
+      "title": "Whiskey Row Girl Dad Hat",
+      "visible": true,
+      "blueprint_id": 1447,
+      "print_provider_id": 217,
+      "enabled_variants": [
+        {
+          "id": 105372,
+          "title": "Black / One size",
+          "price": 3200
+        }
+      ],
+      "sales_channel_properties": []
+    }
+  ]
+}
