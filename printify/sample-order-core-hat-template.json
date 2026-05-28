@@ -1,0 +1,29 @@
+{
+  "note": "Template only. Do not commit real shipping address, phone, or customer data.",
+  "shop_id": 13010147,
+  "recommended_sample": {
+    "title": "One Fourteen 114 Clean Up Cap",
+    "product_id": "6a17d906bfbe7defa20a1e47",
+    "variant_id": 244823,
+    "variant_title": "Black / One size",
+    "quantity": 1,
+    "retail_price_cents": 3400,
+    "why": "Premium 47 Brand blank is the best retail-positioned hat if the DTF mark looks clean in mockup."
+  },
+  "backup_sample": {
+    "title": "One Fourteen 114 Whiskey Row Dad Hat",
+    "product_id": "6a17ce93a63666767e0efd42",
+    "variant_id": 105372,
+    "variant_title": "Black / One size",
+    "quantity": 1,
+    "retail_price_cents": 3200,
+    "why": "Embroidery may feel more premium if the 47 Brand DTF mark looks too flat."
+  },
+  "pre_order_checks": [
+    "Check front mark scale on the cap mockup.",
+    "Make sure the mark sits centered and not too low on the crown.",
+    "Prefer the 47 Brand cap if the mark looks clean.",
+    "Prefer the Yupoong embroidered cap if the 47 Brand DTF finish looks cheap.",
+    "Do not publish to Etsy until a physical sample is approved."
+  ]
+}

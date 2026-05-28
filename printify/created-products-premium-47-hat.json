@@ -1,0 +1,22 @@
+{
+  "uploads": {
+    "core_114_47_dtf": "6a17d902d4e9b007ee7d4cc4"
+  },
+  "created_products": [
+    {
+      "id": "6a17d906bfbe7defa20a1e47",
+      "title": "One Fourteen 114 Clean Up Cap",
+      "visible": true,
+      "blueprint_id": 5376,
+      "print_provider_id": 41,
+      "enabled_variants": [
+        {
+          "id": 244823,
+          "title": "Black / One size",
+          "price": 3400
+        }
+      ],
+      "sales_channel_properties": []
+    }
+  ]
+}
